@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://127.0.0.1:27017/foodcart", {
+mongoose.connect("mongodb+srv://Praveen:Praveen19112003@foodcartcluster.cbsx3vp.mongodb.net/foodcartdb?retryWrites=true&w=majority&appName=foodcartcluster", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
