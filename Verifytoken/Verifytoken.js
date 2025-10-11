@@ -15,7 +15,7 @@ export const verifytoken = (req, res, next) => {
     }
     catch (error) {
         res.json({ message: error.message })
-        //console.log(error.message);
+        // console.log(error.message);
 
     }
 }

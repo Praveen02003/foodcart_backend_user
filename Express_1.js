@@ -19,6 +19,7 @@ import { Snacks } from "./Categories/Snacks.js";
 import { Soups } from "./Categories/Soups.js";
 import { Starters } from "./Categories/Starters.js";
 import { verifytoken } from "./Verifytoken/Verifytoken.js";
+import { Ordersdata } from "./Orders/Orders.js";
 
 dotenv.config();
 const mysecretkey = "19112003"
@@ -69,7 +70,7 @@ app.post("/login", async (req, res) => {
                 res.json({ message: "Wrong Password" });
             }
             else {
-                const tokens = jwt.sign({ mail: login.mail }, mysecretkey, { expiresIn: "1h" });
+                const tokens = jwt.sign({ mail: login.mail }, mysecretkey, { expiresIn: "10s" });
                 //console.log(tokens);
                 res.json({ message: "Login Successfull", token: tokens });
             }
@@ -275,5 +276,16 @@ app.post('/cartdetails', async (req, res) => {
         res.json({ message: "Unable to find cartitems" })
     }
 })
+
+
+app.post("/orders", async (req, res) => {
+    const { mail, username, items, quantity, total } = req.body
+    try {
+        const savedata = await Ordersdata.insertMany([{ mail: mail, username: username, items: items, quantity: quantity, total: total }])
+        res.json({ message: "Data Saved" })
+    } catch (error) {
+        res.json({ message: "Data Saved Failed" })
+    }
+});
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
