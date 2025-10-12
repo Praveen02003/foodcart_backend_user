@@ -27,8 +27,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// const mongourl="mongodb+srv://Praveen:Praveen19112003@foodcartcluster.cbsx3vp.mongodb.net/foodcartdb?retryWrites=true&w=majority&appName=foodcartcluster"
-const mongourl = "mongodb://localhost:27017/foodcartdb"
+const mongourl="mongodb+srv://Praveen:Praveen19112003@foodcartcluster.cbsx3vp.mongodb.net/foodcartdb?retryWrites=true&w=majority&appName=foodcartcluster"
+// const mongourl = "mongodb://localhost:27017/foodcartdb"
 
 mongoose.connect(mongourl, {
     useNewUrlParser: true,
