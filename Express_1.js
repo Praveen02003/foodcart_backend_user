@@ -70,7 +70,7 @@ app.post("/login", async (req, res) => {
                 res.json({ message: "Wrong Password" });
             }
             else {
-                const tokens = jwt.sign({ mail: login.mail }, mysecretkey, { expiresIn: "10s" });
+                const tokens = jwt.sign({ mail: login.mail }, mysecretkey, { expiresIn: "1h" });
                 //console.log(tokens);
                 res.json({ message: "Login Successfull", token: tokens });
             }
@@ -287,5 +287,26 @@ app.post("/orders", async (req, res) => {
         res.json({ message: "Data Saved Failed" })
     }
 });
+
+app.post('/passwordupdate', async (req, res) => {
+    const { mail, password } = req.body
+    try {
+        const getdata = await Signupuser.findOne({ mail: mail })
+        // console.log(getdata);
+        if (getdata) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt)
+            const updatedata = await Signupuser.updateOne({ mail: mail }, { $set: { password: hashedPassword } })
+            // console.log(getdata);
+
+            res.json({ message: "Password updated successfully" })
+        }
+        else {
+            res.json({ message: "Invalid Credentials" })
+        }
+    } catch (error) {
+        res.json({ message: "Password update failed" })
+    }
+})
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

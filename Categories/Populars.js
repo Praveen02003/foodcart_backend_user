@@ -13,6 +13,10 @@ const popularSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  defaultprice: {
+    type: Number,
+    default: 0
+  },
   offer: {
     type: Number,
     default: 0
