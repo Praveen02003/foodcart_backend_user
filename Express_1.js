@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import QRCode from "qrcode";
 import { Signupuser } from "./Signup.js";
 import { Beverages } from "./Categories/Beverages.js";
 import { Breakfasts } from "./Categories/Breakfasts.js";
@@ -308,5 +308,26 @@ app.post('/passwordupdate', async (req, res) => {
         res.json({ message: "Password update failed" })
     }
 })
+
+
+app.post("/generateqr", async (req, res) => {
+  const { amount, orderId } = req.body;
+
+  // your UPI details
+  const upiId = "praveen.aeropilot@okaxis";
+  const payeeName = "PRAVEEN J";
+
+  // Create UPI payment link
+  const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=Order+${orderId}`;
+
+  try {
+    // Generate QR image (base64)
+    const qrDataURL = await QRCode.toDataURL(upiLink);
+    res.json({ qrImage: qrDataURL, upiLink });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to generate QR" });
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
